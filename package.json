@@ -1,0 +1,21 @@
+{
+  "name": "FriendFinder",
+  "version": "1.0.0",
+  "description": "FriendFinder is a compatibility-based full stack web application similar to many dating apps out there. \r Compatibility among app users is established by comparing user answers to a 10 question survey. \r Upon completing the survey, every new user is shown the name and image of their best overall match.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zizaeric/FriendFinder.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zizaeric/FriendFinder/issues"
+  },
+  "homepage": "https://github.com/zizaeric/FriendFinder#readme"
+}
