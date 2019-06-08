@@ -26,6 +26,9 @@ app.use(bodyParser.text({
     type: "text/html"
 }));
 
+
+require("./app/routing/htmlRoutes.js")(app);
+
 app.listen(PORT, function() {
     console.log("App listerning on PORT: " + PORT);
 });
