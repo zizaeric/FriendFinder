@@ -5,18 +5,15 @@ var app = express();
 
 var PORT = process.env.PORT || 8080;
 
-// create application/json parser
-var jsonParser = bodyParser.json();
-
 // create application/x-www-forom-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({extended: false});
+app.use(bodyParser.urlencoded({extended: true}));
 
 // parse various custom JSON types as JSON
 app.use(bodyParser.json({
     type: "application/*+json"
 }));
 
-// parse some custom thing intoa Buffer
+// parse some custom thing into a Buffer
 app.use(bodyParser.raw({
     type: "application/vnd.custom-type"
 }));

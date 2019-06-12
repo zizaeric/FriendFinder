@@ -5,19 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Bootstrap CSS, JS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> -->
 
+    <!-- compiled and minified CSS & JS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  
     <!-- Font Awesome Glyphicons -->
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"> 
 
     <!-- chosen -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.jquery.min.js"></script>
 
     <title>Friend Finder</title>
 </head>
@@ -179,10 +185,115 @@
 
         <footer class="footer">
             <div class="container">
-                <p><a href="#">API Friends List</a> | <a href="#"> GitHub Repo</a></p>
+                <p><a href="/api/friends">API Friends List</a> | <a href="https://github.com/zizaeric/FriendFinder"> GitHub Repo</a></p>
             </div>
         </footer>
         
     </div>
+    
+    <!-- modal -->
+    <div id="resultsModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- modal content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2 class="modal-title"><strong>Your Best Match!</strong></h2>
+                </div>
+                <div class="modal-body">
+                    <h2 id="matchName"></h2>
+                    <!-- img link Q?----------------------------------------- -->
+                    <img id="matchImg" src="http://thehowardtheatre.com/assets/manu-dibango-e1468954133373-538x301.jpg" alt="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+    // Chosen CSS
+    var config = {
+        ".chosen-select": {},
+        ".chosen-select-deselect": {
+            allow_singal_deselect: true
+        },
+        ".chosen-select-no-single": {
+            disable_search_threshold: 10
+        },
+        ".chosen-select-no-results": {
+            no_results_text: "Sorry, no matches found!"
+        },
+        ".chosen-select-width": {
+            width: "95%"
+        }
+    };
+
+    for (var selector in config) {
+        $(selector).chosen(config[selector]);
+    }
+    
+    // capture user form input upon submit
+    $("#submit").on("click", function(event) {
+        event.preventDefault();
+
+        // validate form inputs
+        function validateForm() {
+            var isValid = true;
+
+            // name or image url can't be empty
+            $(".form-control").each(function() {
+                if ($(this).val() ==="") {
+                    isValid = false;
+                }
+            });
+
+            $(".chosen-select").each(function() {
+                if ($(this).val() === "") {
+                    isValid = false;
+                }
+            });
+            return isValid;
+        }
+
+        // once validated put all user data into a new object
+        if (validateForm()) {
+            var userData = {
+                name: $("#name").val(),
+                photo: $("#photo").val(),
+                scores: [
+                    $("#q1").val(),
+                    $("#q2").val(),
+                    $("#q3").val(),
+                    $("#q4").val(),
+                    $("#q5").val(),
+                    $("#q6").val(),
+                    $("#q7").val(),
+                    $("#q8").val(),
+                    $("#q9").val(),
+                    $("#q10").val()
+                ]
+            };
+
+            var currentURL = window.location.origin;
+            $.post(currentURL + "/api/friends", userData, function(data) {
+
+                $("#matchName").text(data.name);
+                $("#matchImg").attr("src", data.photo);
+
+                $("#resultsModal").modal("toggle");
+                // alert("got it!");
+            });
+        } else {
+            alert("All fields are required. Please fill out and resubmit the form.")
+        }
+    })
+    
+    </script>
+
+
 </body>
 </html>
